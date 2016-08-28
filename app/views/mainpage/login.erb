@@ -1,0 +1,25 @@
+<% content_for :head_title do %>
+  <title id="login-page-title" data-title="login_page_title">Login Page</title>
+<% end %>
+
+<% content_for :head_meta do %>
+<% end %>
+
+<% content_for :css_link do %>
+    <%= stylesheet_link_tag "mainpage" %>
+<% end %>
+
+	<div class="container" id="main-body" ng-controller="LoginPageController">
+		<% if current_user %>
+			<%= link_to('Logout', destroy_user_session_path, :method => :delete) %> |
+		    <%= link_to('Change PassWord', edit_registration_path(:user)) %>
+		<% else %>
+		    <%= link_to('Register', new_registration_path(:user)) %> |
+		    <%= link_to('Login', new_session_path(:user)) %>
+		<% end %>
+
+    </div> <!-- /container -->
+	
+<% content_for :body_javascript_code do %>
+
+<% end %>

@@ -1,0 +1,205 @@
+
+<% content_for :head_title do %>
+  <title id="login-page-title" data-title="login_page_title">Login Page</title>
+<% end %>
+
+<% content_for :head_meta do %>
+<% end %>
+
+<% content_for :css_link do %>
+    <%= stylesheet_link_tag "mainpage" %>
+    <style type="text/css">
+      body {
+          background: #c1bdba;
+          font-family: 'Titillium Web', sans-serif;
+          margin: 0px;
+          padding: 0px;
+      }
+      #user_remember_me {
+        width: 30px;
+        height: 30px;
+        padding: 0px;
+        margin: 0px;
+        line-height: 30px;
+      }
+      .rem-link {
+        position: relative;
+        display: block;
+        text-align: left;
+        height: 30px;
+        line-height: 30px;
+        font-size: 17px;
+        color: white;
+      }
+      #error_explanation {
+        color: red;
+      }
+    </style>
+<% end %>
+
+<!--  content start ============================================================  -->
+
+<div class="container login-container" id="main-body" ng-controller="LoginPageController">
+<div class="form">
+      
+      <ul class="tab-group">
+        <li class="tab <%= 'active' if @pageAction != 'loginFail' %>"><a href="#signup">Sign Up</a></li>
+        <li class="tab <%= 'active' if @pageAction == 'loginFail' %>"><a href="#login">Log In</a></li>
+      </ul>
+      
+      <div class="tab-content">
+        <div id="signup">   
+
+          <h1>Sign Up for Free</h1>
+
+          <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+            
+            <% @notice.each_with_index do |i ,index| %>
+              <div style="color: red;"><%= i %></div>
+            <% end %>
+            <div class="field-wrap">
+              <label>
+                Email Address<span class="req">*</span>
+              </label>
+              <%= f.email_field :email ,autofocus: true, autocomplete: "off" %>
+            </div>
+            
+            <div class="field-wrap">
+              <label>
+                Set A Password<span class="req">*</span>
+              </label>
+              <% if @validatable %>
+              <em>(<%= @minimum_password_length %> characters minimum)</em>
+              <% end %>
+              <%= f.password_field :password, autocomplete: "off" %>
+            </div>
+
+            <div class="field-wrap">
+              <label>
+                Password Confirmation<span class="req">*</span>
+              </label>
+              <%= f.password_field :password_confirmation, autocomplete: "off" %>
+            </div>
+
+            <div class="actions">
+              <%= f.submit "Get Started", :class => 'button button-block' %>
+            </div>
+          <% end %>
+        </div>
+        
+        <div id="login">   
+          <h1>Welcome Back EDAS!</h1>
+          <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+            <div style="color:red;">
+              <%= flash[:alert]%>
+            </div>
+            <div class="field-wrap">
+              <label>
+                Email Address<span class="req">*</span>
+              </label>
+              <%= f.email_field :email, autofocus: true  %>
+            </div>
+
+            <div class="field-wrap" style="margin-bottom: 100px;">
+              <label>
+                Password<span class="req">*</span>
+              </label>
+              <%= f.password_field :password, autocomplete: "off"  %>
+            </div>
+            <% if devise_mapping.rememberable? -%>
+            <div class="forgot" style="float: left;position: relative;display: flex;">
+              <%= f.check_box :remember_me, :class => 'rem-class' %>
+              <div class="rem-link" >Remember me</div>
+            </div>
+            <% end -%> 
+            <p class="forgot"><a style="float: right;" href="#">Forgot Password?</a></p>
+            <%= f.submit "Log in", :class => 'button button-block' %>
+            
+          <% end %>
+
+        </div>
+        
+      </div>
+
+
+
+  
+
+</div>
+
+<!--  content end =============================================================  -->
+
+  
+  
+<% content_for :body_javascript_code do %>
+<script type="text/javascript">
+  $(function() {
+  console.log('Indside');
+  $('.form').find('input, textarea').on('keyup blur focus', function(e) {
+    var $this, label;
+    $this = $(this);
+    label = $this.prev('label');
+    if (e.type === 'keyup') {
+      if ($this.val() === '') {
+        label.removeClass('highlight');
+        label.addClass('active');
+      } else {
+        label.addClass('active highlight');
+      }
+    } else if (e.type === 'blur') {
+      if ($this.val() === '') {
+        label.removeClass('active highlight');
+      } else {
+        label.removeClass('highlight');
+      }
+    } else if (e.type === 'focus') {
+      if ($this.val() === '') {
+        label.addClass('active highlight');
+      } else if ($this.val() !== '') {
+        label.addClass('active');
+        label.addClass('highlight');
+      }
+    }
+  });
+
+  $('.form').find('input, textarea').change(function(){
+    $this = $(this);
+    console.log('count:',$this.val());
+    label = $this.prev('label');
+    if ($this.val() === '') {
+        label.removeClass('active highlight');
+        console.log('count1');
+      } else {
+        console.log('count2');
+        label.addClass('active');
+      }
+  });
+
+  $('.active').each(function(){
+    target = $(this).find('a').attr('href');
+    console.log('active work!!:', $(this).find('a').attr('href'));
+    $('.tab-content > div').not(target).hide();
+    $(target).fadeIn(600);
+  });
+
+
+  $('.tab a').on('click', function(e) {
+    var target;
+    e.preventDefault();
+    $(this).parent().addClass('active');
+    $(this).parent().siblings().removeClass('active');
+    target = $(this).attr('href');
+    console.log('tab work!!:', $(this).attr('href'));
+    $('.tab-content > div').not(target).hide();
+    $(target).fadeIn(600);
+  });
+
+// ---
+// generated by coffee-script 1.9.2
+
+});
+
+</script>
+
+
+<% end %>

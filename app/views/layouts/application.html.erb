@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%= yield :head_title %>
+  <%= yield :head_meta %>
+  <title>Mysite</title>
+  <%= stylesheet_link_tag    "application", media: "all" ,'data-turbolinks-track' => true %>
+  <%= javascript_include_tag "application"  %>
+  
+  
+  <%= yield :css_link %>
+  <%= yield :javascript_link %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <!--
+  <p class="notice" ng-hide="true" ><%= notice %></p>
+  <p class="alert" ng-hide="true" ><%= alert %></p>	
+  -->
+
+  <%= yield %>
+  <%= yield :body_javascript_code %>
+
+</body>
+</html>
